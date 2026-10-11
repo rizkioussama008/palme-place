@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concierge Login | PALME PLACE</title>
+  
+  <!-- Favicon / Logo Icon -->
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <style>
+    body {
+      background: radial-gradient(circle at center, #0f2c20 0%, #080b0a 80%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .login-container {
+      max-width: 460px;
+      width: 100%;
+      background: rgba(15, 21, 18, 0.85);
+      backdrop-filter: blur(25px);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 3rem;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 30px rgba(201, 160, 80, 0.15);
+      text-align: center;
+      position: relative;
+    }
+
+    .login-logo {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: #080b0a;
+      font-size: 1.8rem;
+      box-shadow: 0 0 25px rgba(201, 160, 80, 0.4);
+    }
+
+    .login-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.85rem;
+      color: #ffffff;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-subtitle {
+      color: var(--gold-400);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      margin-bottom: 2.5rem;
+      display: block;
+    }
+
+    .form-group-login {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    body.lang-ar .form-group-login {
+      text-align: right;
+    }
+
+    .login-input {
+      width: 100%;
+      background: rgba(8, 11, 10, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.95rem 1.25rem;
+      color: #ffffff;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: var(--transition);
+      box-sizing: border-box;
+    }
+
+    .login-input:focus {
+      outline: none;
+      border-color: var(--gold-400);
+      box-shadow: 0 0 15px rgba(201, 160, 80, 0.3);
+      background: rgba(15, 21, 18, 0.95);
+    }
+
+    .demo-hint {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(201, 160, 80, 0.08);
+      border: 1px dashed var(--border-gold);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="luxury-noise"></div>
+
+  <div class="login-container">
+    <div class="login-logo" style="padding: 2px; overflow: hidden; border: 2px solid var(--gold-400);">
+      <img src="assets/images/logo.jpg" alt="PALME PLACE Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+    </div>
+    <h1 class="login-title">PALM PALACE</h1>
+    <span class="login-subtitle" id="login-sub-txt">RESTAURANTS ET CAFÉ</span>
+
+    <form id="admin-login-form">
+      <div class="form-group-login">
+        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem;" id="lbl-user">Administrator Username</label>
+        <input type="text" id="username" class="login-input" required placeholder="admin" value="admin">
+      </div>
+
+      <div class="form-group-login">
+        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem;" id="lbl-pass">Secret Access Key</label>
+        <input type="password" id="password" class="login-input" required placeholder="••••••••" value="admin">
+      </div>
+
+      <button type="submit" class="btn-gold" style="width: 100%; padding: 0.95rem; margin-top: 1rem; font-size: 1rem;">
+        <i class="fas fa-shield-alt"></i> <span id="btn-login-txt">Authorize & Enter Suite</span>
+      </button>
+    </form>
+
+    <div class="demo-hint">
+      <strong style="color: var(--gold-300); display: block; margin-bottom: 0.25rem;">Default Demo Access:</strong>
+      Username: <code style="color: #fff;">admin</code> | Password: <code style="color: #fff;">admin</code> or <code style="color: #fff;">palme2026</code>
+    </div>
+
+    <div style="margin-top: 1.5rem;">
+      <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s;" onmouseover="this.style.color='#c9a050'" onmouseout="this.style.color='#838e88'">
+        <i class="fas fa-arrow-left"></i> Return to Main Restaurant
+      </a>
+    </div>
+  </div>
+
+  <script src="assets/js/db.js"></script>
+  <script>
+    // Handle Login Form
+    document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+
+      const res = PalmeAuth.login(user, pass);
+      if (res.success) {
+        window.location.href = 'admin.html';
+      } else {
+        alert(res.message);
+      }
+    });
+
+    // Check if already authenticated
+    if (PalmeAuth.isAuthenticated()) {
+      window.location.href = 'admin.html';
+    }
+  </script>
+</body>
+</html>
