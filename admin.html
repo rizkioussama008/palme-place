@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | PALME PLACE</title>
+  
+  <!-- Favicon / Logo Icon -->
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+  <!-- FontAwesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+  
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <img src="assets/images/logo.jpg" alt="PALM PALACE Logo" class="brand-logo-img">
+      </div>
+      <div class="brand-text">
+        <h1 style="font-size: 1.05rem; color: #fff;">PALM PALACE</h1>
+        <span style="font-size: 0.58rem; color: var(--admin-gold); letter-spacing: 0.15em;">RESTAURANTS ET CAFÉ</span>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="sidebar-item active">
+        <a href="#" data-tab="overview">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard Overview</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="restaurant">
+          <i class="fas fa-store-alt"></i>
+          <span>Restaurant Profile</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="menu">
+          <i class="fas fa-utensils"></i>
+          <span>Menu Dishes</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="reservations">
+          <i class="fas fa-calendar-check"></i>
+          <span>Reservations</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="offers">
+          <i class="fas fa-tags"></i>
+          <span>Special Offers</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="gallery">
+          <i class="fas fa-images"></i>
+          <span>Visual Gallery</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="customers">
+          <i class="fas fa-users"></i>
+          <span>VIP Diners</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="messages">
+          <i class="fas fa-envelope"></i>
+          <span>Guest Messages</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="reviews">
+          <i class="fas fa-star"></i>
+          <span>Google Reviews (4.2★)</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" data-tab="settings">
+          <i class="fas fa-cog"></i>
+          <span>Settings & SEO</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--admin-emerald); display: flex; align-items: center; justify-content: center; color: var(--admin-gold); font-size: 0.9rem; font-weight: 700;">
+            A
+          </div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 600; color: #fff;">Admin Manager</div>
+            <div style="font-size: 0.7rem; color: var(--admin-gold);">Superuser</div>
+          </div>
+        </div>
+        <button id="admin-logout-btn" class="btn-action-icon delete" title="Logout" style="border: none;">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Admin Main Content Area -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span style="font-size: 0.85rem; color: var(--admin-text-muted);">
+          <i class="fas fa-clock" style="color: var(--admin-gold); margin-right: 5px;"></i> Live Concierge Desk
+        </span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <button id="admin-lang-btn" class="lang-btn">
+          <i class="fas fa-globe"></i> <span id="admin-lang-txt">العربية</span>
+        </button>
+        <a href="index.html" target="_blank" class="btn-outline-gold" style="padding: 0.45rem 1.15rem; font-size: 0.85rem;">
+          <i class="fas fa-external-link-alt"></i> Main Site
+        </a>
+      </div>
+    </header>
+
+    <main class="admin-content" id="admin-main-view">
+      <!-- Dynamically Rendered by admin.js -->
+    </main>
+  </div>
+
+  <script src="assets/js/db.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
