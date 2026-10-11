@@ -382,7 +382,47 @@ const DEFAULT_STORE_DATA = {
     }
   ],
 
-  orders: []
+  orders: [
+    {
+      id: "PALM-1001",
+      customer_name: "عمر الراجي",
+      customer_phone: "06 68 11 22 33",
+      customer_address: "حي الوحدة 2، قرب مسجد التقوى، السمارة",
+      delivery_type: "delivery",
+      delivery_fee: 10,
+      payment_method: "cod",
+      payment_method_name: "الدفع عند الاستلام (COD)",
+      items: [
+        { id: "dish-3", name: "Le Smash Burger Truffé", name_ar: "سماش برغر الفاخر بالكمأة", price: 65, quantity: 2, subtotal: 130 },
+        { id: "dish-5", name: "Frites Maison & Sauces Gourmandes", name_ar: "بطاطا مقلية منزلية مقرمشة بالصلصات", price: 20, quantity: 1, subtotal: 20 },
+        { id: "dish-7", name: "Café Spécialité Espresso Intense", name_ar: "قهوة إسبريسو مختصة إيطالية مركزة", price: 18, quantity: 2, subtotal: 36 }
+      ],
+      subtotal: 186,
+      total: 196,
+      notes: "يرجى تجهيز فكة 200 درهم، وبطاطس مقرمشة ساخنة.",
+      status: "Preparing",
+      created_at: "2026-10-11 16:45"
+    },
+    {
+      id: "PALM-1002",
+      customer_name: "سارة المنصوري",
+      customer_phone: "06 55 44 33 22",
+      customer_address: "شارع الحسن الثاني، عمارة الأمل، السمارة",
+      delivery_type: "delivery",
+      delivery_fee: 10,
+      payment_method: "cod",
+      payment_method_name: "الدفع عند الاستلام (COD)",
+      items: [
+        { id: "dish-1", name: "Côte de Bœuf Grillée au Feu de Bois", name_ar: "شريحة لحم بقر مشوية على الفحم", price: 185, quantity: 1, subtotal: 185 },
+        { id: "dish-6", name: "Jus d'Orange Frais & Cocktails Détox", name_ar: "عصير برتقال طبيعي ومشروبات ديتوكس", price: 22, quantity: 2, subtotal: 44 }
+      ],
+      subtotal: 229,
+      total: 239,
+      notes: "توصيل سريع من فضلكم.",
+      status: "Pending",
+      created_at: "2026-10-11 17:30"
+    }
+  ]
 };
 
 // Database Service Interface
@@ -396,7 +436,7 @@ const PalmeDB = {
         const parsed = JSON.parse(existing);
         let updated = false;
         for (let key in DEFAULT_STORE_DATA) {
-          if (!parsed[key]) {
+          if (!parsed[key] || (key === 'orders' && (!Array.isArray(parsed.orders) || parsed.orders.length === 0))) {
             parsed[key] = DEFAULT_STORE_DATA[key];
             updated = true;
           }
@@ -536,6 +576,65 @@ const PalmeDB = {
   deleteReservation: function(id) {
     const data = this.getAll();
     data.reservations = data.reservations.filter(r => r.id !== id);
+    return this.saveAll(data);
+  },
+
+  // Orders (Online Delivery & COD)
+  getOrders: function() {
+    return this.getAll().orders || [];
+  },
+
+  addOrder: function(order) {
+    const data = this.getAll();
+    if (!data.orders) data.orders = [];
+    if (!order.id) {
+      order.id = 'PALM-' + Math.floor(1000 + Math.random() * 9000);
+    }
+    order.status = order.status || 'Pending';
+    order.payment_method = 'cod';
+    order.payment_method_name = 'الدفع عند الاستلام (COD)';
+    order.created_at = new Date().toISOString().replace('T', ' ').substring(0, 16);
+    data.orders.unshift(order);
+
+    // Sync Customer
+    if (!data.customers) data.customers = [];
+    let cust = data.customers.find(c => c.phone === order.customer_phone);
+    if (cust) {
+      cust.total_spent = (cust.total_spent || 0) + (order.total || 0);
+      cust.orders_count = (cust.orders_count || 0) + 1;
+      cust.last_order = order.created_at;
+      if (order.customer_address) cust.address = order.customer_address;
+    } else {
+      data.customers.push({
+        id: 'cust-' + Date.now(),
+        name: order.customer_name,
+        phone: order.customer_phone,
+        email: order.customer_email || '',
+        address: order.customer_address || '',
+        reservations_count: 0,
+        orders_count: 1,
+        last_order: order.created_at,
+        total_spent: order.total || 0
+      });
+    }
+
+    this.saveAll(data);
+    return order;
+  },
+
+  updateOrderStatus: function(id, status) {
+    const data = this.getAll();
+    const order = (data.orders || []).find(o => o.id === id);
+    if (order) {
+      order.status = status;
+      return this.saveAll(data);
+    }
+    return false;
+  },
+
+  deleteOrder: function(id) {
+    const data = this.getAll();
+    data.orders = (data.orders || []).filter(o => o.id !== id);
     return this.saveAll(data);
   },
 
